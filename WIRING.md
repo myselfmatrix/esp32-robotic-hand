@@ -155,8 +155,16 @@ raasta lo.
 
 ### Naya WiFi daalna ho
 
-[`src/palm/main.cpp`](src/palm/main.cpp) mein `WIFI_SSID` / `WIFI_PASS` badlo
-aur upload karo.
+[`include/secrets.h`](include/secrets.h) mein `WIFI_SSID` / `WIFI_PASS` badlo
+aur upload karo. File na ho to banani padegi:
+
+```bash
+cp include/secrets.example.h include/secrets.h
+```
+
+Ye file `.gitignore` mein hai, isliye password kabhi GitHub par nahi jata.
+Agar `secrets.h` banayi hi nahi, to bhi sab chalta hai — ESP32 router
+dhoondhega hi nahi aur seedha apna hotspot bana lega (raasta #3).
 
 ⚠️ ESP32 ka antenna kamzor hai. **−70 dBm se kamzor signal par nahi judega.**
 Ghar par router `−77` par tha, isiliye fail ho raha tha; phone hotspot `−30` par
