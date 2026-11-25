@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Robotic Palm — Project Report</title>
+<style>
+  @page { size: A4; margin: 15mm 14mm 15mm 14mm; }
+
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+
+  html { font-size: 9.5pt; }
+  body {
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    color: #1d2327; line-height: 1.44; margin: 0;
+  }
+
+  /* shuru ke chaar -- har ek apne page par */
+  .sheet { page-break-after: always; }
+  /* baaki sab lagatar behta hai */
+  .flow  { }
+  .nobreak { page-break-inside: avoid; }
+
+  h1 { font-size: 21pt; color: #15614a; margin: 0 0 5px; letter-spacing: .3px; }
+  h2 {
+    font-size: 13pt; color: #15614a; margin: 15px 0 7px;
+    padding-bottom: 4px; border-bottom: 1.5px solid #cfe0d8;
+    page-break-after: avoid;
+  }
+  h2:first-child { margin-top: 0; }
+  h3 { font-size: 10.4pt; color: #1b4c3b; margin: 11px 0 4px; page-break-after: avoid; }
+  p  { margin: 0 0 7px; text-align: justify; orphans: 2; widows: 2; }
+
+  ul, ol { margin: 0 0 8px; padding-left: 18px; }
+  li { margin-bottom: 3px; text-align: justify; }
+
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 11px; font-size: 8.7pt; }
+  th {
+    background: #15614a; color: #fff; text-align: left;
+    padding: 5px 7px; font-weight: 600; border: 1px solid #15614a;
+  }
+  td { padding: 4px 7px; border: 1px solid #c8d6d0; vertical-align: top; }
+  tbody tr:nth-child(even) td { background: #f3f8f6; }
+  td.c, th.c { text-align: center; }
+  .mono { font-family: Consolas, "Courier New", monospace; font-size: 8.4pt; }
+  .cap { text-align: center; font-size: 8.4pt; color: #5a6a64; font-style: italic; margin: -7px 0 11px; }
+
+  /* ---------- cover ---------- */
+  .cover-frame {
+    border: 2px solid #1d2327; padding: 30px 28px; text-align: center;
+    height: 258mm; display: flex; flex-direction: column; justify-content: center;
+  }
+  .cover-frame img.logo { width: 118px; margin: 0 auto 18px; }
+  .cover-college { font-size: 18pt; font-weight: 700; color: #1d2327; line-height: 1.35; }
+  .rule { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0; }
+  .rule span { height: 1.4px; background: #1d2327; width: 115px; }
+  .rule b { font-size: 10.5pt; }
+  .cover-title { font-size: 26pt; font-weight: 700; color: #15614a; margin: 4px 0; }
+  .cover-sub { font-size: 11pt; color: #4a5a55; margin-top: 4px; }
+  .cover-by { font-size: 10.5pt; font-weight: 700; margin-top: 24px; }
+  .cover-names { font-size: 11.5pt; font-weight: 700; line-height: 1.95; margin-top: 9px; }
+
+  .ph { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+  .ph img { width: 40px; }
+
+  .lead { font-size: 10.3pt; color: #46564f; text-align: center; margin: -2px 0 13px; }
+  .meta { text-align: center; margin: 2px 0 3px; font-size: 9.8pt; }
+  .meta b { color: #15614a; }
+
+  figure { margin: 12px 0; text-align: center; page-break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid #c8d6d0; border-radius: 3px; }
+  figcaption { font-size: 8.5pt; color: #5a6a64; font-style: italic; margin-top: 6px; line-height: 1.42; }
+
+  .note { background: #f3f8f6; border-left: 4px solid #15614a;
+          padding: 8px 11px; margin: 9px 0; font-size: 9pt; page-break-inside: avoid; }
+  .warn { background: #fdf5ec; border-left: 4px solid #c17d1e;
+          padding: 8px 11px; margin: 9px 0; font-size: 9pt; page-break-inside: avoid; }
+
+  pre {
+    background: #f7faf9; border: 1px solid #ccdbd5; border-left: 3px solid #15614a;
+    padding: 7px 9px; margin: 6px 0 10px;
+    font-family: Consolas, "Courier New", monospace; font-size: 7.5pt; line-height: 1.38;
+    white-space: pre-wrap; word-break: break-word; page-break-inside: avoid;
+  }
+  pre .c { color: #6b8077; }
+  pre .k { color: #0a5ca8; }
+  pre .s { color: #a6341b; }
+  .codecap { font-size: 8.6pt; color: #15614a; font-weight: 600; margin: 10px 0 2px; page-break-after: avoid; }
+
+  .bd { margin: 11px 0 4px; page-break-inside: avoid; }
+  .bd-row { display: flex; align-items: stretch; justify-content: center; gap: 7px; }
+  .bx { border: 1.5px solid #15614a; border-radius: 4px; padding: 6px 5px;
+        text-align: center; font-size: 7.9pt; line-height: 1.32; flex: 1; }
+  .bx b { display: block; font-size: 8.5pt; color: #15614a; margin-bottom: 2px; }
+  .bx.fill { background: #15614a; color: #fff; }
+  .bx.fill b { color: #fff; }
+  .arrow { display: flex; align-items: center; font-size: 13pt; color: #15614a; font-weight: 700; }
+  .vgap { text-align: center; font-size: 13pt; color: #15614a; line-height: 1; margin: 3px 0; }
+
+  .pca { border: 1.5px solid #1d2327; border-radius: 4px; padding: 9px 8px; margin: 10px 0;
+         page-break-inside: avoid; }
+  .pca-t { text-align: center; font-weight: 700; font-size: 8.8pt; margin-bottom: 7px; color: #15614a; }
+  .pca-row { display: flex; gap: 4px; }
+  .pin { flex: 1; text-align: center; font-size: 7.6pt; }
+  .pin .wire { height: 26px; border-radius: 2px; margin-bottom: 3px; }
+  .w-sig { background: linear-gradient(to bottom, #e8a33d 0 33%, #d13b2a 33% 66%, #3a3a3a 66%); }
+  .w-pwr { background: linear-gradient(to bottom, #bbb 0 33%, #d13b2a 33% 66%, #3a3a3a 66%); }
+  .pin b { display: block; color: #15614a; font-size: 7.9pt; }
+
+  .legend { display: flex; gap: 14px; justify-content: center; font-size: 7.9pt; margin-top: 7px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px;
+              margin-right: 4px; vertical-align: -1px; }
+
+  .toc td { border: none; padding: 3px 0; background: none !important; }
+  .toc td.n { width: 26px; color: #15614a; font-weight: 700; }
+  .toc td.pg { text-align: right; width: 40px; color: #5a6a64; }
+
+  .sig { margin-top: 44px; display: flex; justify-content: space-between; font-size: 9.6pt; }
+  .sig div { text-align: center; }
+  .sig span { display: block; border-top: 1px solid #1d2327; padding-top: 5px; min-width: 145px; }
+</style>
+</head>
+<body>
+
+<!-- ======================= 1. COVER ======================= -->
+<div class="sheet">
+  <div class="cover-frame">
+    <img class="logo" src="assets/biet_logo.png" alt="BIET Jhansi">
+    <div class="cover-college">Bundelkhand Institute of Engineering<br>and Technology, Jhansi</div>
+
+    <div class="rule"><span></span><b>&#9670;</b><span></span></div>
+    <div style="font-size:11pt;font-weight:700;">Project Name:</div>
+
+    <div class="cover-title">Robotic Palm</div>
+    <div class="cover-sub">Wi-Fi Controlled Five-Finger Tendon-Driven Robotic Hand</div>
+
+    <div class="rule"><span></span><b>&#9670;</b><span></span></div>
+
+    <div class="cover-by">By</div>
+    <div class="cover-names">
+      Rudra Pratap Singh<br>
+      Harshit Yadav<br>
+      Ankit Kumar Yadav<br>
+      Suchir Ram Mishra
+    </div>
+  </div>
+</div>
+
+<!-- ======================= 2. TITLE ======================= -->
+<div class="sheet">
+  <div class="ph"><img src="assets/biet_logo.png" alt=""></div>
+
+  <h1 style="text-align:center;">ROBOTIC PALM</h1>
+  <div class="lead">B.Tech First-Year Electrical Engineering Project Report</div>
+
+  <div class="meta"><b>Project Type:</b> Microcontroller-based five-finger tendon-driven robotic hand with browser control</div>
+  <div class="meta"><b>Controller:</b> ESP32 DevKit V1 with PCA9685 16-channel PWM servo driver (I²C)</div>
+  <div class="meta"><b>Power Supply:</b> 5 V 5 A SMPS for servos, 5 V USB for controller</div>
+
+  <table style="margin-top:18px;">
+    <tr><td style="width:33%;background:#f3f8f6;"><b>Submitted by</b></td>
+        <td>Rudra Pratap Singh, Harshit Yadav, Ankit Kumar Yadav, Suchir Ram Mishra</td></tr>
+    <tr><td style="background:#f3f8f6;"><b>Roll Numbers</b></td><td>58, 32, 15, 68</td></tr>
+    <tr><td style="background:#f3f8f6;"><b>Branch / Semester</b></td><td>Electrical Engineering / First Semester</td></tr>
+    <tr><td style="background:#f3f8f6;"><b>College</b></td><td>Bundelkhand Institute of Engineering and Technology, Jhansi</td></tr>
+    <tr><td style="background:#f3f8f6;"><b>Submitted to</b></td><td>Er. Shailendra Gautam</td></tr>
+  </table>
+
+  <figure>
+    <img src="assets/hand_photo.png" style="max-height:112mm;" alt="Robotic palm prototype">
+    <figcaption>Figure 1: Assembled prototype — five SG90 micro servos mounted on the rigid forearm
+      base, nylon tendon lines routed into the moulded five-finger palm, PCA9685 driver board with
+      ESP32 controller, and the 5 V 5 A SMPS supplying the common servo rail.</figcaption>
+  </figure>
+</div>
+
+<!-- ======================= 3. CERTIFICATE ======================= -->
+<div class="sheet">
+  <div class="ph"><img src="assets/biet_logo.png" alt=""></div>
+  <h2>Certificate</h2>
+
+  <p style="margin-top:18px;">This is to certify that the project work entitled
+    <b>“Robotic Palm — Wi-Fi Controlled Five-Finger Tendon-Driven Robotic Hand”</b>
+    has been carried out and submitted by <b>Rudra Pratap Singh (Roll No. 58)</b>,
+    <b>Harshit Yadav (Roll No. 32)</b>, <b>Ankit Kumar Yadav (Roll No. 15)</b> and
+    <b>Suchir Ram Mishra (Roll No. 68)</b>, students of First Semester, Electrical
+    Engineering, Bundelkhand Institute of Engineering and Technology, Jhansi, in
+    partial fulfilment of the requirements of the First-Year Engineering project
+    curriculum.</p>
+
+  <p>The work presented in this report is an authentic record of the students’ own
+    effort. The hardware prototype was assembled, wired, programmed and tested by the
+    group, and the calibration figures and test results reported in Sections 13 and 14
+    were measured on the working prototype under supervision.</p>
+
+  <p>To the best of my knowledge, this work has not been submitted elsewhere for the
+    award of any other degree or diploma.</p>
+
+  <div class="sig">
+    <div><span>Er. Shailendra Gautam<br><small>Project Supervisor</small></span></div>
+    <div><span>Head of Department<br><small>Electrical Engineering</small></span></div>
+  </div>
+
+  <h2 style="margin-top:46px;">Acknowledgement</h2>
+  <p>We express our sincere gratitude to our project supervisor <b>Er. Shailendra Gautam</b>
+    for his continuous guidance, patience and encouragement throughout this project. His
+    suggestions on servo safety, current limiting and systematic testing shaped the way we
+    approached the build.</p>
+  <p>We thank the Department of Electrical Engineering, BIET Jhansi, for providing the
+    laboratory facilities, instruments and components required for assembly and testing.
+    We are also grateful to our seniors and classmates for their help during the mechanical
+    assembly and the tendon-routing stage, which proved to be the most demanding part of
+    the work.</p>
+  <p>Finally, we thank our families for their constant support and motivation.</p>
+</div>
+
+<!-- ======================= 4. CONTENTS ======================= -->
+<div class="sheet">
+  <div class="ph"><img src="assets/biet_logo.png" alt=""></div>
+  <h2>Table of Contents</h2>
+
+  <table class="toc">
+    <tr><td class="n">1.</td><td>Abstract</td><td class="pg">5</td></tr>
+    <tr><td class="n">2.</td><td>Introduction</td><td class="pg">5</td></tr>
+    <tr><td class="n">3.</td><td>Problem Statement</td><td class="pg">5</td></tr>
+    <tr><td class="n">4.</td><td>Objectives</td><td class="pg">5</td></tr>
+    <tr><td class="n">5.</td><td>Background and Related Work</td><td class="pg">6</td></tr>
+    <tr><td class="n">6.</td><td>Working Principle</td><td class="pg">6</td></tr>
+    <tr><td class="n">7.</td><td>System Block Description</td><td class="pg">7</td></tr>
+    <tr><td class="n">8.</td><td>Components Required</td><td class="pg">7</td></tr>
+    <tr><td class="n">9.</td><td>Circuit Connections and Wiring</td><td class="pg">8</td></tr>
+    <tr><td class="n">10.</td><td>Construction Procedure</td><td class="pg">10</td></tr>
+    <tr><td class="n">11.</td><td>Software Design</td><td class="pg">10</td></tr>
+    <tr><td class="n">12.</td><td>Firmware Highlights</td><td class="pg">11</td></tr>
+    <tr><td class="n">13.</td><td>Calibration Data</td><td class="pg">12</td></tr>
+    <tr><td class="n">14.</td><td>Testing and Observation</td><td class="pg">13</td></tr>
+    <tr><td class="n">15.</td><td>Advantages</td><td class="pg">15</td></tr>
+    <tr><td class="n">16.</td><td>Limitations</td><td class="pg">16</td></tr>
+    <tr><td class="n">17.</td><td>Safety Precautions</td><td class="pg">16</td></tr>
+    <tr><td class="n">18.</td><td>Applications</td><td class="pg">16</td></tr>
+    <tr><td class="n">19.</td><td>Future Improvements</td><td class="pg">17</td></tr>
+    <tr><td class="n">20.</td><td>Conclusion</td><td class="pg">17</td></tr>
+    <tr><td class="n">21.</td><td>Viva-Voce Questions</td><td class="pg">17</td></tr>
+    <tr><td class="n">22.</td><td>References</td><td class="pg">18</td></tr>
+  </table>
+
+  </div>
+
+<!-- ======================= 5. ABSTRACT / INTRO ======================= -->
+<div class="flow">
+
+  <h2>1. Abstract</h2>
+  <p>The <b>Robotic Palm</b> is a five-finger anthropomorphic robotic hand that reproduces
+    human finger motion using a tendon-driven mechanism and can be operated from any
+    ordinary web browser over Wi-Fi. Each finger is pulled closed by a nylon tendon wound
+    on the horn of an SG90 micro servo and returns to the open position through the
+    elastic restoring force of the moulded palm. The five servos are driven by a
+    <b>PCA9685</b> 16-channel PWM generator, which communicates with an <b>ESP32</b>
+    microcontroller over the I²C bus and produces hardware-timed 50 Hz pulses without
+    loading the processor.</p>
+
+  <p>The ESP32 hosts a self-contained web server, so the control interface is delivered by
+    the board itself — no mobile application, no cloud service and no computer are
+    required once power is applied. The page provides twelve static hand signs, five
+    animated gesture sequences, individual per-finger control in degrees, and a complete
+    calibration workflow whose results are stored in the ESP32’s non-volatile flash memory.</p>
+
+  <p>Two design features distinguish this build from a simple multi-servo demonstration.
+    First, a <b>synchronised motion engine</b> scales each servo’s step size in proportion
+    to the distance it must travel, so fingers with very different ranges begin and finish
+    their motion together and the hand closes as one unit. Second, an <b>automatic relax
+    function</b> removes the PWM signal eight seconds after motion stops, which eliminates
+    the continuous stall current that would otherwise overheat the servos and wear their
+    plastic gear trains. The completed prototype was verified at the PWM register level,
+    checked for repeatability over repeated cycles, and tested across all seventeen
+    implemented motions.</p>
+
+  <h2>2. Introduction</h2>
+  <p>The human hand is remarkable for performing a very wide range of tasks with a
+    comparatively small number of actuators. Reproducing even a part of this capability is
+    a classic problem in robotics, and robotic hands are today used in prosthetics,
+    industrial pick-and-place systems, telemanipulation in hazardous environments, and
+    humanoid research platforms. Commercial prosthetic hands, however, remain extremely
+    expensive, which keeps them out of reach for most users in India.</p>
+
+  <p>This project demonstrates that the fundamental principle of such a hand — tendon
+    actuation driven by position-controlled servos — can be built and understood at
+    first-year engineering level using low-cost, widely available components. The
+    mechanical structure uses a moulded five-finger palm on a rigid forearm base; the
+    actuation uses five SG90 micro servos; and the electronics use one ESP32 development
+    board and one PCA9685 driver module.</p>
+
+  <p>Alongside the mechanism itself, the project addresses a practical engineering concern
+    that is easy to overlook: a servo commanded to a position it cannot physically reach
+    will draw stall current indefinitely and destroy itself. Much of the firmware
+    described in this report exists to prevent exactly that, through per-finger travel
+    limits, measured calibration and automatic PWM cut-off.</p>
+</div>
+
+<!-- ======================= 6. PROBLEM / OBJ / BACKGROUND ======================= -->
+<div class="flow">
+
+  <h2>3. Problem Statement</h2>
+  <p>Building a multi-finger robotic hand at student level presents four difficulties that
+    a single-servo project does not. A microcontroller must generate five independent,
+    accurately timed PWM signals at the same time while remaining free to serve a web
+    page. The servos draw far more current than the controller board can supply, so the
+    power paths must be separated while still sharing a common ground reference. Every
+    finger has a different tendon length and a different mechanical travel, so a single
+    fixed “closed” position cannot serve all five. Finally, an incorrectly specified
+    position silently destroys a servo through stall heating.</p>
+
+  <p>The objective of this project is therefore to design and build a five-finger robotic
+    palm that moves each finger independently and in a coordinated manner, that is safe to
+    operate for extended periods, that can be calibrated and recalibrated without
+    recompiling the firmware, and that can be operated by any person from a browser
+    without installing software.</p>
+
+  <h2>4. Objectives</h2>
+  <ul>
+    <li>Design and assemble a five-finger tendon-driven robotic palm using SG90 micro servos.</li>
+    <li>Generate five independent 50 Hz servo signals using a PCA9685 PWM driver over the I²C bus.</li>
+    <li>Host a self-contained web control interface on the ESP32 so that no external application is required.</li>
+    <li>Implement twelve static hand signs and five animated gesture sequences.</li>
+    <li>Provide per-finger calibration in degrees and store the result in non-volatile flash memory.</li>
+    <li>Synchronise multi-finger motion so that all fingers start and finish together.</li>
+    <li>Protect the servos from stall heating through per-finger travel limits and automatic PWM cut-off.</li>
+    <li>Verify correct operation experimentally at both the electrical and the mechanical level.</li>
+  </ul>
+
+  <h2>5. Background and Related Work</h2>
+  <p><b>Tendon-driven actuation.</b> In a tendon-driven hand the actuator is not placed inside
+    the finger. A flexible line, equivalent to a tendon in the human hand, runs along the
+    underside of the finger from the fingertip to a motor mounted in the forearm. Pulling the
+    line flexes the finger; releasing it allows the finger to straighten. This keeps the heavy
+    components away from the moving structure — exactly the arrangement found in the human
+    forearm, and the reason it was adopted here.</p>
+
+  <p><b>Return mechanism.</b> Every tendon-driven finger needs a restoring force to reopen.
+    Three approaches are common: an antagonistic second tendon, an embedded return spring, and
+    the elastic recovery of the finger material itself. This prototype uses the third, which
+    halves the actuator count and simplifies construction, at the cost of a slower and less
+    forceful opening stroke.</p>
+
+  <p><b>Position control of hobby servos.</b> An SG90 servo contains a DC motor, a reduction
+    gear train, a feedback potentiometer and a control circuit. The commanded position is
+    encoded as the width of a pulse repeated every 20 ms: approximately 500 µs corresponds to
+    0° and 2400 µs to 180°. Significantly, the servo has no way to report whether it reached
+    the target — if the tendon prevents motion, the motor simply continues to draw stall
+    current. This open-loop property is the single most important safety consideration in the
+    design.</p>
+</div>
+
+<!-- ======================= 7. WORKING PRINCIPLE ======================= -->
+<div class="flow">
+
+  <h2>6. Working Principle</h2>
+  <p>The operation of the Robotic Palm can be followed as a chain from the user’s
+    instruction to the movement of a finger.</p>
+
+  <h3>6.1 Command input</h3>
+  <p>The user opens the control page served by the ESP32 and selects a sign, a gesture, or
+    a position for an individual finger. The browser sends a short HTTP request such as
+    <span class="mono">/api/sign?n=peace</span> or <span class="mono">/api/set?ch=1&amp;deg=140</span>.
+    The same commands are also available through the USB serial console, which is used
+    during assembly and fault-finding.</p>
+
+  <h3>6.2 Translation from meaning to pulse width</h3>
+  <p>Hand signs are not stored as pulse widths. Each sign is stored as five percentages,
+    where 0 % means fully open and 100 % means fully closed. The firmware converts a
+    percentage into a pulse width using that particular finger’s own calibrated endpoints:</p>
+  <p style="text-align:center;" class="mono">
+    pulse = open<sub>us</sub> + (closed<sub>us</sub> − open<sub>us</sub>) × percent ÷ 100</p>
+  <p>Because the conversion uses each finger’s measured endpoints, one definition of
+    “fist” produces the correct travel for all five fingers even though the thumb closes
+    at 110° and the middle finger needs 175°. Recalibrating a finger automatically
+    corrects every sign and gesture that uses it, with no change to the firmware.</p>
+
+  <h3>6.3 Safety clamping</h3>
+  <p>Every computed value passes through a clamping function before use. The value is
+    limited to the intersection of the absolute servo range (500–2400 µs) and the
+    individual finger’s recorded limits. A command that would drive a servo past its
+    mechanical stop is reduced to the safe boundary rather than being executed.</p>
+
+  <h3>6.4 Synchronised motion</h3>
+  <p>Fingers are never stepped to their target instantly. A timer runs every 20 ms and
+    moves each finger a small amount towards its goal. The step is not equal for all
+    fingers; it is scaled by the ratio of that finger’s remaining distance to the largest
+    remaining distance in the group. A finger that must travel twice as far moves twice as
+    fast, so all five complete their motion at the same instant and the hand closes as a
+    single coordinated unit.</p>
+
+  <h3>6.5 PWM generation</h3>
+  <p>The ESP32 does not generate the servo pulses itself. It writes the required ON and
+    OFF counts to the PCA9685 over I²C, and the PCA9685 reproduces those pulses
+    continuously in hardware. The processor is therefore left free to serve web requests
+    without any effect on servo timing — a key advantage over software PWM.</p>
+
+  <h3>6.6 Mechanical conversion</h3>
+  <p>The servo horn rotates, winding the tendon around it. The tendon pulls the fingertip
+    towards the palm and the finger flexes. When the servo returns towards its open
+    position the tendon slackens and the elasticity of the palm material straightens the
+    finger again.</p>
+
+  <h3>6.7 Automatic relaxation</h3>
+  <p>If no new command arrives within eight seconds, the firmware writes zero-width pulses
+    to all channels. The servos lose holding torque and the hand goes limp. This removes
+    the continuous current that a loaded servo would otherwise draw while holding a
+    position, and is the main reason the prototype can be left powered during a
+    demonstration without the motors becoming hot. Any new command restores the signal
+    immediately.</p>
+</div>
+
+<!-- ======================= 8. BLOCK DIAGRAM ======================= -->
+<div class="flow">
+
+  <h2>7. System Block Description</h2>
+  <p>The system is organised in five functional stages. Control information flows from left
+    to right; electrical power enters separately from below and is deliberately kept apart
+    from the controller supply.</p>
+
+  <div class="bd nobreak">
+    <div class="bd-row">
+      <div class="bx"><b>USER DEVICE</b>Phone or laptop browser<br>Wi-Fi client</div>
+      <div class="arrow">&#8594;</div>
+      <div class="bx"><b>CONTROL UNIT</b>ESP32 DevKit V1<br>Web server + motion engine<br>NVS calibration storage</div>
+      <div class="arrow">&#8594;</div>
+      <div class="bx"><b>PWM DRIVER</b>PCA9685, address 0x40<br>I²C @ 100 kHz<br>16 channels @ 50 Hz</div>
+      <div class="arrow">&#8594;</div>
+      <div class="bx"><b>ACTUATORS</b>5 × SG90 micro servo<br>500–2400 µs = 0–180°</div>
+      <div class="arrow">&#8594;</div>
+      <div class="bx fill"><b>MECHANISM</b>Tendon lines<br>Five-finger palm</div>
+    </div>
+
+    <div class="vgap">&#8593;</div>
+
+    <div class="bd-row" style="max-width:76%;margin:0 auto;">
+      <div class="bx" style="background:#f3f8f6;"><b>SERVO POWER</b>5 V 5 A SMPS &#8594; PCA9685 V+ rail</div>
+      <div class="bx" style="background:#f3f8f6;"><b>LOGIC POWER</b>5 V USB &#8594; ESP32 (regulated to 3.3 V)</div>
+      <div class="bx" style="background:#f3f8f6;"><b>COMMON GROUND</b>Both supplies tied to one 0 V reference</div>
+    </div>
+  </div>
+  <p class="cap">
+    Figure 2: System block diagram of the Robotic Palm.</p>
+
+  <h3>7.1 User interface stage</h3>
+  <p>Any Wi-Fi capable device with a browser. The ESP32 serves a single self-contained HTML
+    page, so nothing needs to be installed and the hand can be demonstrated using the
+    examiner’s own phone.</p>
+
+  <h3>7.2 Control stage</h3>
+  <p>The ESP32 DevKit V1 is the decision-making element. It runs the HTTP server, converts
+    signs into pulse widths, executes the synchronised motion engine on a 20 ms timer,
+    manages automatic relaxation, and stores calibration in its internal non-volatile
+    storage so that settings survive a power cycle.</p>
+
+  <h3>7.3 PWM generation stage</h3>
+  <p>The PCA9685 contains an independent 12-bit PWM generator for each of its sixteen
+    channels and a programmable prescaler that sets the common frequency. Once configured
+    it regenerates the pulses in hardware indefinitely, which decouples servo timing from
+    processor load.</p>
+
+  <h3>7.4 Actuation stage</h3>
+  <p>Five SG90 micro servos, one per finger, mounted on the rigid forearm base. Each has an
+    operating torque of approximately 1.8 kg·cm and draws roughly 100–150 mA while moving
+    and up to about 700 mA if stalled.</p>
+
+  <h3>7.5 Mechanical stage</h3>
+  <p>Nylon tendon lines run from each servo horn through guide channels to the
+    corresponding fingertip. The moulded palm provides both the finger structure and the
+    elastic return force.</p>
+</div>
+
+<!-- ======================= 9. COMPONENTS ======================= -->
+<div class="flow">
+
+  <h2>8. Components Required</h2>
+  <p>Table 1 lists every component used in the Robotic Palm prototype together with its
+    function in the system.</p>
+
+  <table>
+    <thead><tr>
+      <th class="c" style="width:38px;">S. No.</th><th style="width:28%;">Component</th>
+      <th>Function / Role in the System</th><th class="c" style="width:62px;">Qty</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td>ESP32 DevKit V1 Development Board</td>
+          <td>Main controller; runs the Wi-Fi web server, motion engine and calibration storage</td><td class="c">1</td></tr>
+      <tr><td class="c">2</td><td>PCA9685 16-Channel PWM Servo Driver</td>
+          <td>Generates five hardware-timed 50 Hz servo signals; communicates over I²C at address 0x40</td><td class="c">1</td></tr>
+      <tr><td class="c">3</td><td>SG90 Micro Servo Motor (9 g)</td>
+          <td>One per finger; converts the commanded pulse width into angular position to pull the tendon</td><td class="c">5</td></tr>
+      <tr><td class="c">4</td><td>SMPS Power Supply, 5 V 5 A</td>
+          <td>Supplies the common servo power rail; rated well above the combined servo demand</td><td class="c">1</td></tr>
+      <tr><td class="c">5</td><td>Moulded Five-Finger Palm</td>
+          <td>Provides the finger structure, tendon routing channels and the elastic return force</td><td class="c">1</td></tr>
+      <tr><td class="c">6</td><td>Rigid Forearm Base Plate</td>
+          <td>Mounting platform for the five servos, the driver board and the controller</td><td class="c">1</td></tr>
+      <tr><td class="c">7</td><td>Nylon Tendon Line</td>
+          <td>Transmits the pull from each servo horn to the corresponding fingertip</td><td class="c">5 lines</td></tr>
+      <tr><td class="c">8</td><td>Servo Horns and Mounting Screws</td>
+          <td>Couple the tendon to the servo output spline and set the tendon winding radius</td><td class="c">5 sets</td></tr>
+      <tr><td class="c">9</td><td>Male-to-Female Jumper Wires</td>
+          <td>Carry the four I²C and power connections between the ESP32 and the PCA9685</td><td class="c">4</td></tr>
+      <tr><td class="c">10</td><td>USB Cable (Micro-B, data capable)</td>
+          <td>Supplies the ESP32 and carries firmware upload and the serial diagnostic console</td><td class="c">1</td></tr>
+      <tr><td class="c">11</td><td>Connecting Wire for Power Rail</td>
+          <td>Carries 5 V and 0 V from the SMPS to the PCA9685 servo power pins</td><td class="c">As required</td></tr>
+      <tr><td class="c">12</td><td>Adhesive and Cable Ties</td>
+          <td>Secure the servos to the base and restrain the wiring loom</td><td class="c">As required</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">
+    Table 1: Components required for the Robotic Palm.</p>
+
+  <div class="note">
+    <b>Power rating note.</b> Five SG90 servos moving together draw roughly 0.5–0.75 A, but
+    the momentary stall current of five servos can approach 3.5 A. A 5 A supply was chosen
+    so that the rail voltage does not sag during a simultaneous five-finger movement. A
+    sagging rail causes the ESP32 to brown out and reset, which appears as the hand freezing
+    mid-gesture.
+  </div>
+
+  <div class="warn">
+    <b>Why the servo supply is kept separate.</b> The ESP32 board’s on-board regulator cannot
+    supply servo current. Powering the servos through the controller board causes repeated
+    resets and can damage the regulator. The two supplies share only the 0 V reference.
+  </div>
+</div>
+
+<!-- ======================= 10. CIRCUIT ======================= -->
+<div class="flow">
+
+  <h2>9. Circuit Connections and Wiring</h2>
+
+  <h3>9.1 Controller to driver (I²C bus)</h3>
+  <p>Only four wires connect the ESP32 to the PCA9685. The common ground is not optional:
+    without it the I²C signals have no reference and the driver will not be detected on
+    the bus.</p>
+
+  <table>
+    <thead><tr><th style="width:24%;">ESP32 Pin</th><th class="c" style="width:40px;"></th>
+      <th style="width:24%;">PCA9685 Pin</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">3V3</td><td class="c">&#8594;</td><td class="mono">VCC</td><td>Logic supply for the driver IC (3.3 V)</td></tr>
+      <tr><td class="mono">GND</td><td class="c">&#8594;</td><td class="mono">GND</td><td><b>Common ground reference — mandatory</b></td></tr>
+      <tr><td class="mono">GPIO22</td><td class="c">&#8594;</td><td class="mono">SDA</td><td>I²C serial data line</td></tr>
+      <tr><td class="mono">GPIO23</td><td class="c">&#8594;</td><td class="mono">SCL</td><td>I²C serial clock line</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">
+    Table 2: ESP32 to PCA9685 connections. Device address 0x40 (no address jumpers bridged).</p>
+
+  <h3>9.2 Servo power rail</h3>
+  <p>The <span class="mono">V+</span> pin is a single rail shared by all sixteen channels.
+    Applying 5 V at any one channel’s power pin energises the red pin of every channel, so
+    the supply is connected at the unused channel 15 and reaches all five servos internally.</p>
+
+  <table>
+    <thead><tr><th style="width:28%;">From SMPS</th><th class="c" style="width:40px;"></th>
+      <th>To PCA9685</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">+5 V output</td><td class="c">&#8594;</td><td>Channel 15 <b>red</b> pin (centre row, V+ rail)</td></tr>
+      <tr><td class="mono">0 V / −V output</td><td class="c">&#8594;</td><td>Channel 15 <b>black</b> pin (bottom row, GND rail)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>9.3 Servo channel allocation</h3>
+  <p>Each servo connector presents three conductors: brown to ground, red to V+, and
+    orange to the channel’s signal pin. The connector seats in one orientation only, with
+    the brown conductor towards the edge of the board.</p>
+
+  <div class="pca nobreak">
+    <div class="pca-t">PCA9685 — 16-Channel PWM Servo Driver (I²C address 0x40)</div>
+    <div class="pca-row">
+      <div class="pin"><div class="wire w-sig"></div><b>CH0</b>THUMB</div>
+      <div class="pin"><div class="wire w-sig"></div><b>CH1</b>INDEX</div>
+      <div class="pin"><div class="wire w-sig"></div><b>CH2</b>MIDDLE</div>
+      <div class="pin"><div class="wire w-sig"></div><b>CH3</b>RING</div>
+      <div class="pin"><div class="wire w-sig"></div><b>CH4</b>PINKY</div>
+      <div class="pin" style="flex:.6;"><div style="height:30px;"></div><span style="font-size:13pt;color:#9bb0a8;">&#8230;</span></div>
+      <div class="pin"><div class="wire w-pwr"></div><b>CH15</b>SMPS 5 V</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:#e8a33d;"></i>Orange — PWM signal</span>
+      <span><i style="background:#d13b2a;"></i>Red — V+ (5 V rail)</span>
+      <span><i style="background:#3a3a3a;"></i>Brown — GND</span>
+    </div>
+  </div>
+  <p class="cap">
+    Figure 3: Channel allocation. The V+ rail is common to all sixteen channels.</p>
+</div>
+
+<!-- ======================= 11. CHANNEL TABLE + PARAMS ======================= -->
+<div class="flow">
+
+  <table>
+    <thead><tr><th class="c" style="width:90px;">Channel</th><th style="width:30%;">Finger</th>
+      <th>Note</th></tr></thead>
+    <tbody>
+      <tr><td class="c mono">CH0</td><td><b>THUMB</b></td><td>Shortest travel; opposes the other four</td></tr>
+      <tr><td class="c mono">CH1</td><td><b>INDEX</b></td><td>Used alone for the pointing sign</td></tr>
+      <tr><td class="c mono">CH2</td><td><b>MIDDLE</b></td><td>Longest finger, largest tendon travel</td></tr>
+      <tr><td class="c mono">CH3</td><td><b>RING</b></td><td>Largest tendon travel together with the middle finger</td></tr>
+      <tr><td class="c mono">CH4</td><td><b>PINKY</b></td><td>Shortest finger; smallest available tendon stroke</td></tr>
+      <tr><td class="c mono">CH15</td><td>— (no servo)</td><td>Power injection point for the SMPS</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">
+    Table 3: Servo channel allocation.</p>
+
+  <div class="note">
+    <b>Design note — why channel numbers appear only once in the firmware.</b> Every sign and
+    gesture in the firmware refers to fingers by <i>name</i>, never by channel number. The
+    mapping from name to channel exists in exactly one table. If the wiring order is changed
+    during reassembly, only that one column needs editing and all seventeen motions remain
+    correct. This was verified in practice: the channel order was reversed during a rebuild
+    and no gesture definition required any change.
+  </div>
+
+  <h3>9.4 Electrical parameters</h3>
+  <table>
+    <thead><tr><th style="width:42%;">Parameter</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>I²C bus speed</td><td class="mono">100 kHz (standard mode)</td></tr>
+      <tr><td>PCA9685 device address</td><td class="mono">0x40</td></tr>
+      <tr><td>PWM frequency</td><td class="mono">50 Hz (20 ms period)</td></tr>
+      <tr><td>PCA9685 prescaler value</td><td class="mono">131 → measured 49.9 Hz</td></tr>
+      <tr><td>PWM resolution</td><td class="mono">12 bit (4096 counts), 1 count ≈ 4.89 µs</td></tr>
+      <tr><td>Servo pulse range</td><td class="mono">500 µs (0°) to 2400 µs (180°)</td></tr>
+      <tr><td>Motion update interval</td><td class="mono">20 ms (one PWM period)</td></tr>
+      <tr><td>Servo supply voltage</td><td class="mono">5 V DC from SMPS</td></tr>
+      <tr><td>Controller supply voltage</td><td class="mono">5 V USB, regulated on-board to 3.3 V</td></tr>
+      <tr><td>Automatic relax delay</td><td class="mono">8 s (adjustable, 0 disables)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>9.5 Degree-to-pulse conversion</h3>
+  <p>The firmware presents all positions in degrees, which is far easier to reason about
+    than microseconds. The conversion used throughout is linear:</p>
+  <p style="text-align:center;" class="mono">
+    pulse (µs) = 500 + angle (°) × 1900 ÷ 180</p>
+  <p>For example 15° gives 658 µs, 110° gives 1661 µs and 175° gives 2347 µs. These exact
+    values appear in the calibration table of Section 13 and in the measured register
+    readings of Section 14.</p>
+</div>
+
+<!-- ======================= 12. CONSTRUCTION ======================= -->
+<div class="flow">
+
+  <h2>10. Construction Procedure</h2>
+  <p>The order of assembly matters: the servo horns must be fitted while the servos are held
+    at a known electrical position, otherwise the available travel is lost and no amount of
+    software adjustment can recover it.</p>
+
+  <ol>
+    <li><b>Prepare the base.</b> Mark five servo positions on the rigid forearm plate, spaced
+      to align with the tendon exit channels of the palm. Fix the servos with adhesive and
+      allow them to set completely before applying any load.</li>
+
+    <li><b>Wire the I²C bus.</b> With all power disconnected, connect ESP32 <span class="mono">3V3</span>
+      to PCA9685 <span class="mono">VCC</span>, <span class="mono">GND</span> to <span class="mono">GND</span>,
+      <span class="mono">GPIO22</span> to <span class="mono">SDA</span> and <span class="mono">GPIO23</span>
+      to <span class="mono">SCL</span>.</li>
+
+    <li><b>Connect the servo power rail.</b> Run the SMPS <span class="mono">+5 V</span> to the
+      channel 15 red pin and <span class="mono">0 V</span> to the channel 15 black pin. Verify
+      the polarity with a multimeter before switching on; reversed polarity will destroy
+      the driver board.</li>
+
+    <li><b>Verify the bus before loading.</b> Power only the ESP32 over USB and open the serial
+      console at 115200 baud. The startup I²C scan must report the driver at address 0x40.
+      Do not proceed until this passes.</li>
+
+    <li><b>Set the servos to the mounting position.</b> With the horns still removed, command
+      every servo to 15° using <span class="mono">deg 0 15</span> through
+      <span class="mono">deg 4 15</span>. This is the reference position from which the
+      entire tendon stroke is measured.</li>
+
+    <li><b>Fit the horns.</b> With the servos held at 15°, press each horn onto its spline so
+      that the arm points towards the fingers. Fitting a horn at the wrong angle is the most
+      common assembly error — the finger is then left with insufficient travel to close, and the
+      only remedy is to refit the horn one spline tooth further round.</li>
+
+    <li><b>Route and tie the tendons.</b> Thread each nylon line from the fingertip through the
+      palm channel to the servo horn. With the finger held straight and the servo still at 15°,
+      tie the line to the outermost hole of the horn, taut but not under tension — any
+      pre-tension is subtracted directly from the usable stroke.</li>
+
+    <li><b>Energise and verify individually.</b> Switch on the SMPS and move each finger alone,
+      increasing the angle in small steps. Confirm that the finger named in the command is
+      the finger that moves. Any mismatch indicates a connector in the wrong channel.</li>
+
+    <li><b>Calibrate.</b> For each finger in turn, set the open position and record it, then
+      increase the angle gradually until the finger is fully closed and record that. Save the
+      result to flash. The measured values obtained for this prototype are given in Section 13.</li>
+
+    <li><b>Verify the complete system.</b> Run the full set of signs and gestures, confirm the
+      hand returns to the open position, and confirm that the calibration survives a power
+      cycle.</li>
+  </ol>
+
+  <div class="warn">
+    <b>Critical precaution during calibration.</b> Increase the closing angle in small steps and
+    stop at the first position where the finger is fully closed. Commanding a larger angle does
+    not close the finger further; it only forces the servo to pull against a tendon that cannot
+    move, producing stall current, audible buzzing, rapid heating and eventual gear damage. If
+    buzzing is heard, return the finger to the open position immediately.
+  </div>
+</div>
+
+<!-- ======================= 13. SOFTWARE DESIGN ======================= -->
+<div class="flow">
+
+  <h2>11. Software Design</h2>
+  <p>The firmware is written in C++ using the Arduino framework for ESP32 and is built with
+    PlatformIO. It is organised as a single non-blocking main loop: no part of the program
+    waits in a delay, so the web server, the serial console and the motion engine all remain
+    responsive at the same time.</p>
+
+  <h3>11.1 Program structure</h3>
+  <table>
+    <thead><tr><th style="width:30%;">Module</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><b>Configuration</b></td><td>Pin assignments, I²C address, absolute pulse limits and the degree-mapping constants</td></tr>
+      <tr><td><b>Finger table</b></td><td>The single place where finger names, channel numbers, calibrated endpoints and per-finger limits are defined</td></tr>
+      <tr><td><b>Conversion helpers</b></td><td>Degree-to-pulse, percentage-to-pulse and the safety clamping function</td></tr>
+      <tr><td><b>Motion engine</b></td><td>Runs every 20 ms; advances each finger towards its target with distance-proportional step sizing</td></tr>
+      <tr><td><b>Sign and gesture tables</b></td><td>Twelve static signs stored as percentages and five animated sequences stored as timed steps</td></tr>
+      <tr><td><b>Calibration store</b></td><td>Reads and writes endpoints, limits and channel numbers to ESP32 non-volatile storage</td></tr>
+      <tr><td><b>Web server</b></td><td>Serves the control page and a small JSON API for state and commands</td></tr>
+      <tr><td><b>Serial console</b></td><td>Diagnostic command interface used during assembly and fault-finding</td></tr>
+      <tr><td><b>Network manager</b></td><td>Maintains the Wi-Fi station link, the fallback access point and the mDNS name</td></tr>
+    </tbody>
+  </table>
+
+  <h3>11.2 Non-volatile calibration storage</h3>
+  <p>Calibration is written to the ESP32’s internal flash through the Preferences library.
+    Stored values take priority over the compiled defaults at startup, so the hand can be
+    recalibrated entirely from the web page without recompiling. The channel number is stored
+    alongside the endpoints, which means a rewiring is also preserved — but equally it means
+    that a stored mapping overrides a newly compiled one until the defaults are explicitly
+    reloaded and saved. This behaviour was encountered during development and is recorded in
+    Section 14.6.</p>
+
+  <h3>11.3 Network design</h3>
+  <p>The board operates as a Wi-Fi station and an access point simultaneously. Three routes
+    to the control page are therefore always available:</p>
+  <table>
+    <thead><tr><th class="c" style="width:38px;">#</th><th style="width:34%;">Address</th><th>Availability</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td class="mono">http://&lt;assigned IP&gt;</td><td>When joined to a router; the IP may change after a reconnection</td></tr>
+      <tr><td class="c">2</td><td class="mono">http://hand.local</td><td>Same network, resolved by name through mDNS; unaffected by IP changes</td></tr>
+      <tr><td class="c">3</td><td class="mono">http://192.168.4.1</td><td><b>Always available.</b> Join the board’s own access point; needs no router</td></tr>
+    </tbody>
+  </table>
+  <p>The third route is the one used for demonstration, because it is independent of any
+    external network and the address is fixed. The access point is started only after the
+    station link is established, since a single radio must settle on one channel for both
+    roles.</p>
+</div>
+
+<!-- ======================= CODE (compact) ======================= -->
+<div class="flow">
+
+  <h2>12. Firmware Highlights</h2>
+  <p>The complete firmware is approximately 1,530 lines of C++ built with PlatformIO. Two
+    short extracts are reproduced here because they define the behaviour that distinguishes
+    this build from a simple multi-servo demonstration. Comments appear as written by the
+    team.</p>
+
+  <div class="codecap">12.1 &nbsp; The finger table — the single source of truth</div>
+<pre><span class="c">// #############################################################</span>
+<span class="c">// #  MOTOR ARRANGEMENT -- SIRF YEH TABLE BADALNI HAI</span>
+<span class="c">// #  Saare signs/gestures ungli ke NAAM se likhe hain, channel</span>
+<span class="c">// #  se nahi -- isliye taar idhar-udhar ho jayein to bas niche</span>
+<span class="c">// #  wala 'ch' number badal do, aur kuch nahi chhuna.</span>
+<span class="c">// #############################################################</span>
+Finger fingers[NUM_FINGERS] = {
+  <span class="c">//  name        ch   open  closed    min   max</span>
+  { <span class="s">"THUMB"</span>,   0,    658,  1661,     500, 2400 },   <span class="c">// 15 -&gt; 110 deg</span>
+  { <span class="s">"INDEX"</span>,   1,    658,  1978,     500, 2400 },   <span class="c">// 15 -&gt; 140 deg</span>
+  { <span class="s">"MIDDLE"</span>,  2,    658,  2347,     500, 2400 },   <span class="c">// 15 -&gt; 175 deg</span>
+  { <span class="s">"RING"</span>,    3,    658,  2347,     500, 2400 },   <span class="c">// 15 -&gt; 175 deg</span>
+  { <span class="s">"PINKY"</span>,   4,    658,  2294,     500, 2400 }    <span class="c">// 15 -&gt; 170 deg</span>
+};
+
+<span class="c">// percent: 0 = poori khuli, 100 = poori mudi.  Har ungli ke APNE</span>
+<span class="c">// open/closed se hisaab lagta hai, isliye ek hi 'fist' definition</span>
+<span class="c">// paanchon par sahi travel deti hai.</span>
+<span class="k">uint16_t</span> percentToUs(<span class="k">uint8_t</span> idx, <span class="k">int</span> percent) {
+  <span class="k">int</span> lo = fingers[idx].usOpen;
+  <span class="k">int</span> hi = fingers[idx].usClosed;
+  <span class="k">return</span> clampF(idx, lo + ((hi - lo) * percent) / 100);
+}</pre>
+
+  <div class="codecap">12.2 &nbsp; Synchronised motion engine (runs every 20 ms)</div>
+<pre><span class="k">void</span> updateMotion() {
+  <span class="c">// Sabse lambi doori nikalo -- usi ke hisaab se baaki ki raftaar</span>
+  <span class="c">// tay hogi, taki paanchon ungli EK SAATH pahunchein.</span>
+  <span class="k">float</span> maxDiff = 0;
+  <span class="k">for</span> (<span class="k">uint8_t</span> i = 0; i &lt; NUM_FINGERS; i++) {
+    <span class="k">float</span> d = fabs(targetUs[i] - currentUs[i]);
+    <span class="k">if</span> (d &gt; maxDiff) maxDiff = d;
+  }
+  <span class="k">if</span> (maxDiff &lt; 0.5) <span class="k">return</span>;                 <span class="c">// sab pahunch gaye</span>
+
+  <span class="k">for</span> (<span class="k">uint8_t</span> i = 0; i &lt; NUM_FINGERS; i++) {
+    <span class="k">float</span> diff = targetUs[i] - currentUs[i];
+    <span class="k">if</span> (fabs(diff) &lt; 0.5) <span class="k">continue</span>;
+
+    <span class="c">// apni doori ke hisaab se raftaar</span>
+    <span class="k">float</span> step = speedUsPerTick * (fabs(diff) / maxDiff);
+
+    <span class="k">if</span> (fabs(diff) &lt;= step) currentUs[i] = targetUs[i];
+    <span class="k">else</span> currentUs[i] += (diff &gt; 0 ? step : -step);
+
+    writeUs(fingers[i].channel, clampF(i, (<span class="k">int</span>)currentUs[i]));
+  }
+  lastMoveMs = millis();   <span class="c">// auto-relax ka timer reset</span>
+}</pre>
+
+</div>
+
+<!-- ======================= 18. CALIBRATION ======================= -->
+<div class="flow">
+
+  <h2>13. Calibration Data</h2>
+  <p>Calibration establishes, for each finger, the pulse width at which it is fully open and
+    the pulse width at which it is fully closed. It is the step that converts five identical
+    servos into five correctly behaving fingers, and it must be repeated whenever a tendon is
+    retied or a horn is refitted.</p>
+
+  <h3>13.1 Procedure followed</h3>
+  <ol>
+    <li>All five fingers were commanded to 15°, the horn mounting reference, and this position
+      was recorded as <b>OPEN</b> for every finger.</li>
+    <li>One finger at a time was advanced in steps while the remaining four were held open, so
+      that the finger under test carried no interference from its neighbours.</li>
+    <li>The first angle at which the finger was fully closed was recorded as <b>CLOSED</b>.</li>
+    <li>The open–close cycle was repeated several times at each candidate value to confirm the
+      finger returned to the same position.</li>
+    <li>The completed table was written to flash and verified after a power cycle.</li>
+  </ol>
+
+  <h3>13.2 Measured results</h3>
+  <table>
+    <thead><tr>
+      <th class="c" style="width:62px;">Channel</th><th style="width:17%;">Finger</th>
+      <th class="c">OPEN</th><th class="c">CLOSED</th>
+      <th class="c">Travel</th><th class="c">Margin to stop</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="c mono">CH0</td><td><b>THUMB</b></td><td class="c">15° (658 µs)</td><td class="c">110° (1661 µs)</td><td class="c">95°</td><td class="c">70°</td></tr>
+      <tr><td class="c mono">CH1</td><td><b>INDEX</b></td><td class="c">15° (658 µs)</td><td class="c">140° (1978 µs)</td><td class="c">125°</td><td class="c">40°</td></tr>
+      <tr><td class="c mono">CH2</td><td><b>MIDDLE</b></td><td class="c">15° (658 µs)</td><td class="c">175° (2347 µs)</td><td class="c">160°</td><td class="c">5°</td></tr>
+      <tr><td class="c mono">CH3</td><td><b>RING</b></td><td class="c">15° (658 µs)</td><td class="c">175° (2347 µs)</td><td class="c">160°</td><td class="c">5°</td></tr>
+      <tr><td class="c mono">CH4</td><td><b>PINKY</b></td><td class="c">15° (658 µs)</td><td class="c">170° (2294 µs)</td><td class="c">155°</td><td class="c">10°</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">
+    Table 4: Measured calibration values. “Margin to stop” is the unused travel remaining
+    before the servo reaches its 180° mechanical limit.</p>
+
+  <h3>13.3 Interpretation</h3>
+  <p>The required closing angle differs by 65° between the thumb and the middle finger. This
+    is not a fault; it reflects genuine differences in finger length, tendon path length and
+    the exact tension at which each line was tied. The percentage-based sign definitions
+    absorb this difference automatically.</p>
+
+  <div class="warn">
+    <b>Observation on remaining margin.</b> The middle and ring fingers close at 175°, leaving
+    only 5° of travel before the servo’s mechanical stop. If a tendon slackens slightly during
+    handling, these two fingers will no longer close completely and <i>no software adjustment
+    can recover the motion</i> — the stroke simply does not exist. The engineering remedy is to
+    retension those two tendons, or to fit a longer servo horn so that the same angular
+    rotation produces a greater linear pull. The thumb, at 95° of travel with 70° in reserve,
+    illustrates how the mechanism behaves when the tendon is correctly tensioned.
+  </div>
+
+  <div class="note">
+    <b>Persistence.</b> The table above is held in two places: the compiled firmware defaults and
+    the ESP32’s non-volatile storage. If the flash is erased, the compiled defaults restore the
+    same values at the next startup, so a working calibration is never lost.
+  </div>
+</div>
+
+<!-- ======================= 19. TESTING ======================= -->
+<div class="flow">
+
+  <h2>14. Testing and Observation</h2>
+  <p>Testing proceeded from the electrical layer outwards, so that a fault found at any stage
+    could be attributed to that stage alone.</p>
+
+  <h3>14.1 PWM driver verification</h3>
+  <p>The PCA9685 configuration and output registers were read back over I²C while a known
+    position was commanded. The observed result was:</p>
+<pre>MODE1    = 0x20   SLEEP = no (correct)
+MODE2    = 0x04   OUTDRV = totem-pole (correct)
+PRESCALE = 131    -&gt; 49.9 Hz, 1 count = 4.89 us
+
+Ch   ON     OFF    -&gt; actual pulse
+ 0       0    134  -&gt;  655 us        (commanded  658 us)
+ 1       0    134  -&gt;  655 us
+ 2       0    134  -&gt;  655 us
+ 3       0    134  -&gt;  655 us
+ 4       0    469  -&gt; 2293 us        (commanded 2294 us)</pre>
+  <p>The frequency is within 0.2 % of the 50 Hz target and every channel reproduces the
+    commanded width to within one PWM count (4.89 µs), which is the resolution limit of the
+    device. The PWM stage is therefore correct.</p>
+
+  <h3>14.2 Repeatability test</h3>
+  <p>One finger was cycled between its open and closed positions six times, with the output
+    register read at the end of each movement:</p>
+  <table>
+    <thead><tr><th class="c">Cycle</th><th class="c">1</th><th class="c">2</th><th class="c">3</th>
+      <th class="c">4</th><th class="c">5</th><th class="c">6</th></tr></thead>
+    <tbody>
+      <tr><td><b>Open (15°)</b></td><td class="c mono">655</td><td class="c mono">655</td><td class="c mono">655</td>
+          <td class="c mono">655</td><td class="c mono">655</td><td class="c mono">655</td></tr>
+      <tr><td><b>Closed (170°)</b></td><td class="c mono">2293</td><td class="c mono">2293</td><td class="c mono">2293</td>
+          <td class="c mono">2293</td><td class="c mono">2293</td><td class="c mono">2293</td></tr>
+    </tbody>
+  </table>
+  <p>All twelve readings are identical. This establishes that the control signal is perfectly
+    repeatable, and therefore that any variation observed in the physical movement of a finger
+    must originate in the mechanism — the tendon, the horn or the servo — and not in the
+    firmware. This test proved to be the most useful diagnostic of the whole project.</p>
+
+  <h3>14.3 Channel isolation test</h3>
+  <p>Each finger was closed alone while the other four were held open, confirming both the
+    name-to-channel mapping and the absence of electrical cross-talk:</p>
+  <table>
+    <thead><tr><th style="width:30%;">Command issued</th><th>Resulting position (THUMB / INDEX / MIDDLE / RING / PINKY)</th><th class="c" style="width:62px;">Result</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">THUMB &#8594; closed</td><td class="mono">109 / 14 / 14 / 14 / 14</td><td class="c">Pass</td></tr>
+      <tr><td class="mono">INDEX &#8594; closed</td><td class="mono">14 / 140 / 14 / 14 / 14</td><td class="c">Pass</td></tr>
+      <tr><td class="mono">MIDDLE &#8594; closed</td><td class="mono">14 / 14 / 174 / 14 / 14</td><td class="c">Pass</td></tr>
+      <tr><td class="mono">RING &#8594; closed</td><td class="mono">14 / 14 / 14 / 174 / 14</td><td class="c">Pass</td></tr>
+      <tr><td class="mono">PINKY &#8594; closed</td><td class="mono">14 / 14 / 14 / 14 / 169</td><td class="c">Pass</td></tr>
+    </tbody>
+  </table>
+
+  <h3>14.4 Synchronisation test</h3>
+  <p>The hand was commanded from fully open to the pointing sign while positions were sampled
+    continuously. The four closing fingers started together and reached their individual
+    targets at the same instant, despite travels differing by 65°:</p>
+<pre>              THUMB  INDEX  MIDDLE  RING   PINKY
+  t + 0.0 s      16     14      16     16      16
+  t + 0.8 s      36     14      51     51      50
+  t + 1.6 s      59     14      89     89      87
+  t + 2.2 s      77     14     120    120     116
+  t + 3.0 s      99     14     158    158     153
+  t + 3.7 s     109     14     174    174     169   &lt;- all arrive together</pre>
+  <p>At every sample the fingers are at the same fraction of their individual journeys,
+    confirming that the distance-proportional step sizing works as designed. The index finger
+    correctly remains open at 14° throughout.</p>
+</div>
+
+<!-- ======================= 20. TESTING 2 ======================= -->
+<div class="flow">
+
+  <h3>14.5 Hand signs implemented</h3>
+  <p>All twelve static signs were executed and the fingers remaining open were recorded:</p>
+  <table>
+    <thead><tr><th style="width:22%;">Sign</th><th>Fingers held open</th><th class="c" style="width:70px;">Result</th></tr></thead>
+    <tbody>
+      <tr><td><b>OPEN</b></td><td>All five</td><td class="c">Pass</td></tr>
+      <tr><td><b>FIST</b></td><td>None</td><td class="c">Pass</td></tr>
+      <tr><td><b>PEACE</b></td><td>Index + Middle</td><td class="c">Pass</td></tr>
+      <tr><td><b>POINT</b></td><td>Index</td><td class="c">Pass</td></tr>
+      <tr><td><b>THUMBS UP</b></td><td>Thumb</td><td class="c">Pass</td></tr>
+      <tr><td><b>ROCK</b></td><td>Index + Pinky</td><td class="c">Pass</td></tr>
+      <tr><td><b>CALL ME</b></td><td>Thumb + Pinky</td><td class="c">Pass</td></tr>
+      <tr><td><b>GUN</b></td><td>Thumb + Index</td><td class="c">Pass</td></tr>
+      <tr><td><b>OK</b></td><td>Middle + Ring + Pinky, thumb and index pinched to 70 %</td><td class="c">Pass</td></tr>
+      <tr><td><b>THREE</b></td><td>Index + Middle + Ring</td><td class="c">Pass</td></tr>
+      <tr><td><b>FOUR</b></td><td>Index + Middle + Ring + Pinky</td><td class="c">Pass</td></tr>
+      <tr><td><b>MIDDLE</b></td><td>Middle</td><td class="c">Pass</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">
+    Table 5: Static hand signs implemented and verified.</p>
+
+  <h3>14.6 Animated gestures</h3>
+  <table>
+    <thead><tr><th style="width:20%;">Gesture</th><th>Motion</th><th class="c" style="width:70px;">Result</th></tr></thead>
+    <tbody>
+      <tr><td><b>WAVE</b></td><td>Travelling wave from the little finger to the thumb, repeated three times</td><td class="c">Pass</td></tr>
+      <tr><td><b>HELLO</b></td><td>All fingers curl and release together in a greeting motion</td><td class="c">Pass</td></tr>
+      <tr><td><b>COUNT</b></td><td>Counts down from five to zero by releasing one finger at a time</td><td class="c">Pass</td></tr>
+      <tr><td><b>GRAB</b></td><td>Closes to a grip, holds, then releases</td><td class="c">Pass</td></tr>
+      <tr><td><b>DRUM</b></td><td>Fingers tap in sequence, imitating drumming on a surface</td><td class="c">Pass</td></tr>
+    </tbody>
+  </table>
+  <p>The travelling nature of the wave is visible in the recorded positions: at one sample the
+    middle, ring and little fingers stood at 63°, 104° and 128° respectively, forming the
+    staircase that produces the wave.</p>
+
+  <h3>14.7 Overall system tests</h3>
+  <table>
+    <thead><tr><th style="width:36%;">Test Condition</th><th>Expected Response</th><th class="c" style="width:78px;">Observed Result</th></tr></thead>
+    <tbody>
+      <tr><td>Power applied, no command</td><td>All fingers move to the open position and hold</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>I²C bus scan at startup</td><td>Driver detected at address 0x40</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Single-finger command</td><td>Only the named finger moves</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Fist command</td><td>All five fingers close and arrive together</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Idle for eight seconds</td><td>PWM removed, hand goes limp, servos cool</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Command after relaxation</td><td>Signal restored and motion resumes immediately</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Browser control over Wi-Fi</td><td>Page loads and every control responds</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Access-point route (192.168.4.1)</td><td>Reachable with no router present</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Calibration saved, power cycled</td><td>Stored values reloaded at startup</td><td class="c">Pass (Verified)</td></tr>
+      <tr><td>Command beyond a finger’s limit</td><td>Value clamped; servo does not reach its stop</td><td class="c">Pass (Verified)</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">
+    Table 6: Test conditions and observed results.</p>
+
+  <div class="note">
+    <b>A fault worth recording.</b> After the wiring order was changed during a rebuild and new
+    firmware was uploaded, the pointing sign extended the wrong finger. The cause was not the
+    new firmware but the <i>stored</i> calibration: because the channel number is saved in
+    non-volatile storage along with the endpoints, the old mapping was reloaded at startup and
+    overrode the newly compiled table. Reloading the defaults and saving them resolved it. The
+    lesson — that persistent configuration can silently override compiled code — is a general
+    one and worth remembering in any embedded design.
+  </div>
+</div>
+
+<!-- ======================= ADV / LIM / SAFETY ======================= -->
+<div class="flow">
+
+  <h2>15. Advantages</h2>
+  <ul>
+    <li><b>No application or computer required.</b> The control interface is served by the ESP32
+      itself, so the hand can be demonstrated from any phone or laptop browser.</li>
+    <li><b>Always reachable.</b> The board runs as a station and an access point simultaneously,
+      so the fixed address 192.168.4.1 works even where no network is available.</li>
+    <li><b>Accurate hardware PWM.</b> The PCA9685 generates pulses independently of processor
+      load, so servo timing is unaffected by web traffic — measured at 49.9 Hz against 50 Hz.</li>
+    <li><b>Coordinated motion.</b> Distance-proportional step sizing makes all five fingers arrive
+      together, producing a natural closing action rather than a staggered one.</li>
+    <li><b>Protected against stall damage.</b> Per-finger travel limits, safety clamping and
+      automatic PWM cut-off prevent the most common cause of servo failure.</li>
+    <li><b>Field-recalibrable.</b> Endpoints are measured through the web interface and written to
+      flash; no recompilation is needed after a repair.</li>
+    <li><b>Maintainable design.</b> Signs are defined by finger name and percentage, so a rewiring
+      requires a change to one table and nothing else.</li>
+    <li><b>Expandable and low cost.</b> Eleven driver channels remain free, and the prototype costs
+      a small fraction of any commercial robotic hand.</li>
+  </ul>
+
+  <h2>16. Limitations</h2>
+  <ul>
+    <li><b>One actuator per finger.</b> Each finger curls as a single unit; the individual joints
+      of a human finger cannot be controlled separately.</li>
+    <li><b>No position feedback.</b> Hobby servos cannot report their actual position, so a slipped
+      tendon or blocked finger cannot be detected. All safety is preventive.</li>
+    <li><b>Passive return stroke.</b> Opening relies on the elasticity of the palm material, which
+      is slower than the closing stroke and degrades as the material ages.</li>
+    <li><b>Limited remaining travel on two fingers.</b> The middle and ring fingers close only 5°
+      short of the servo’s mechanical stop, leaving no tolerance for tendon stretch.</li>
+    <li><b>No grip force control</b> without current sensing or force sensors.</li>
+    <li><b>Calibration is mechanical-dependent.</b> Retying a tendon or refitting a horn invalidates
+      the stored values.</li>
+    <li><b>Modest payload.</b> SG90 servos deliver about 1.8 kg·cm, limiting the hand to light objects.</li>
+  </ul>
+
+  <h2>17. Safety Precautions</h2>
+  <ul>
+    <li>Verify SMPS polarity with a multimeter before connecting it; reversed polarity destroys
+      the driver board immediately.</li>
+    <li>Never power the servos from the ESP32’s 5 V or 3.3 V pin — the on-board regulator cannot
+      supply the current and will be damaged.</li>
+    <li>Always connect the common ground; without it the I²C bus has no reference.</li>
+    <li>Stop increasing a finger’s closing angle as soon as it is fully closed. Any further
+      command only produces stall current.</li>
+    <li>If a servo buzzes or becomes warm, open the hand or issue the relax command at once —
+      buzzing is the audible signature of a stalled servo.</li>
+    <li>Do not force a finger by hand while the servo is holding position; this strips the gears.</li>
+    <li>Keep the automatic relax function enabled during demonstrations, and keep the SMPS and
+      all wiring away from water.</li>
+  </ul>
+</div>
+
+<!-- ======================= APPS / FUTURE / CONCLUSION ======================= -->
+<div class="flow">
+
+  <h2>18. Applications</h2>
+  <ul>
+    <li><b>Prosthetics education.</b> A low-cost platform demonstrating the operating principle of
+      a tendon-driven prosthetic hand.</li>
+    <li><b>Robotics teaching.</b> A practical vehicle for teaching PWM, I²C communication, actuator
+      safety and embedded web interfaces in one project.</li>
+    <li><b>Humanoid and service robots.</b> A manipulator for light handling tasks on a small
+      mobile or humanoid platform.</li>
+    <li><b>Remote and hazardous handling.</b> With a camera added, objects can be manipulated from
+      a safe distance.</li>
+    <li><b>Sign-language demonstration.</b> The sign library can be extended into an
+      alphabet-spelling teaching aid.</li>
+    <li><b>Exhibitions and outreach.</b> An engaging demonstration operable by visitors from their
+      own phones.</li>
+  </ul>
+
+  <h2>19. Future Improvements</h2>
+  <ul>
+    <li><b>Longer servo horns.</b> Increasing the winding radius from about 15 mm to 30 mm doubles
+      the linear pull for the same rotation, restoring travel margin on the middle and ring fingers.</li>
+    <li><b>Antagonistic tendons.</b> A second tendon per finger would give a positive, controlled
+      opening stroke instead of relying on material elasticity.</li>
+    <li><b>Current sensing for force feedback.</b> Measuring servo current indicates contact force,
+      allowing delicate objects to be gripped and stalls to be detected automatically.</li>
+    <li><b>Higher-torque metal-gear servos</b> (MG90S or MG996R) to raise payload and eliminate
+      plastic-gear wear.</li>
+    <li><b>Wrist rotation.</b> A sixth servo on a free channel would add a degree of freedom.</li>
+    <li><b>Glove-based teleoperation or EMG control</b> so the hand copies an operator’s hand, or is
+      driven by forearm muscle signals — bringing the prototype closer to a true prosthesis.</li>
+    <li><b>Over-the-air firmware updates</b> to remove the dependence on a USB connection.</li>
+  </ul>
+
+  <h2>20. Conclusion</h2>
+  <p>The Robotic Palm successfully demonstrates that a five-finger tendon-driven robotic hand can
+    be designed, built and controlled at first-year engineering level using an ESP32
+    microcontroller, a PCA9685 PWM driver and five SG90 micro servos. All twelve static hand signs
+    and all five animated gestures were executed correctly on the completed prototype, and the
+    hand is operated entirely from an ordinary web browser with no application installed.</p>
+
+  <p>Measurement confirmed the quality of the implementation. The PWM stage produced 49.9 Hz
+    against a 50 Hz target and reproduced every commanded pulse width to within one count of
+    4.89 µs. Six consecutive open–close cycles produced twelve identical register readings,
+    establishing that the control signal is exactly repeatable. The synchronisation test showed
+    four fingers with travels differing by 65° starting and finishing together, and the stored
+    calibration survived a power cycle intact.</p>
+
+  <p>Beyond the mechanism, the project required the team to confront problems characteristic of
+    real embedded engineering: separating a high-current actuator supply from a logic supply while
+    preserving a common ground, protecting an open-loop actuator that gives no warning before it
+    destroys itself, calibrating five mechanically dissimilar axes so that one command behaves
+    correctly on all of them, and diagnosing a fault caused by persistent configuration silently
+    overriding newly compiled code. Learning to isolate such a fault by reading the PWM registers
+    directly — and thereby proving the firmware was not at fault — was among the most valuable
+    outcomes of the work.</p>
+
+  <p>The project connects core first-year Electrical Engineering concepts — pulse-width modulation,
+    serial digital communication, power supply design, motor control and current limiting — to a
+    working mechatronic system, and provides a sound foundation for the force-feedback and
+    teleoperation extensions outlined above.</p>
+</div>
+
+<!-- ======================= 24. VIVA ======================= -->
+<div class="flow">
+
+  <h2>21. Viva-Voce Questions</h2>
+
+  <h3>1. What is the main purpose of the Robotic Palm?</h3>
+  <p>It reproduces the grasping and gesturing motion of a human hand using five servo-actuated
+    tendon-driven fingers, and can be operated remotely from a web browser over Wi-Fi.</p>
+
+  <h3>2. Why is a PCA9685 used instead of driving the servos directly from the ESP32?</h3>
+  <p>The PCA9685 contains sixteen independent hardware PWM generators. Once configured it
+    produces the pulses continuously without processor involvement, so servo timing is immune
+    to the load of serving web requests. It also keeps the servo current path entirely off the
+    controller board and leaves eleven channels free for expansion.</p>
+
+  <h3>3. How does a servo motor know which position to move to?</h3>
+  <p>The position is encoded as the width of a pulse repeated every 20 ms. Approximately 500 µs
+    corresponds to 0° and 2400 µs to 180°. The servo’s internal circuit compares a feedback
+    potentiometer against the commanded value and drives the motor until they match.</p>
+
+  <h3>4. What is a tendon-driven mechanism and why was it chosen?</h3>
+  <p>The actuator sits in the forearm and pulls the finger through a flexible line, exactly as
+    the human forearm muscles operate the fingers. It keeps mass out of the moving fingers and
+    allows the use of small servos.</p>
+
+  <h3>5. How do the fingers return to the open position?</h3>
+  <p>Through the elastic recovery of the moulded palm material. When the servo unwinds, the
+    tendon slackens and the finger straightens by itself. This halves the number of servos
+    required compared with an antagonistic two-tendon design.</p>
+
+  <h3>6. Why is a separate 5 V 5 A supply used for the servos?</h3>
+  <p>Five servos can momentarily draw around 3.5 A. The ESP32’s on-board regulator cannot supply
+    this, and attempting it causes the rail to sag and the controller to brown out and reset.
+    The two supplies share only the 0 V reference.</p>
+
+  <h3>7. Why must the grounds be connected together?</h3>
+  <p>I²C signals are voltages measured with respect to ground. Without a shared reference the
+    driver cannot interpret the controller’s signals and will not be detected on the bus.</p>
+
+  <h3>8. What does calibration achieve, and why is it different for each finger?</h3>
+  <p>It records the pulse width at which each finger is fully open and fully closed. The values
+    differ because the fingers differ in length, tendon path and the tension at which each line
+    was tied — measured here from 110° for the thumb to 175° for the middle finger.</p>
+
+</div>
+
+<!-- ======================= 25. REFERENCES ======================= -->
+<div class="flow">
+
+  <h2>22. References</h2>
+  <ol>
+    <li>Espressif Systems, <i>ESP32 Series Datasheet</i> and <i>ESP32 Technical Reference
+      Manual</i>, Espressif Systems (Shanghai) Co. Ltd.</li>
+    <li>NXP Semiconductors, <i>PCA9685 — 16-Channel, 12-Bit PWM Fm+ I²C-Bus LED Controller,
+      Product Data Sheet</i>.</li>
+    <li>Tower Pro, <i>SG90 9 g Micro Servo — Technical Specification and Operating Range</i>.</li>
+    <li>Adafruit Industries, <i>Adafruit PWM Servo Driver Library</i> and accompanying
+      application notes.</li>
+    <li>NXP Semiconductors, <i>UM10204 — I²C-Bus Specification and User Manual</i>, Rev. 6.</li>
+    <li>Espressif Systems, <i>ESP-IDF Programming Guide</i> — Non-Volatile Storage (NVS) and
+      Wi-Fi Driver sections.</li>
+    <li>Basic Electrical and Electronics Engineering Laboratory Manual, BIET Jhansi.</li>
+    <li>Standard First-Year B.Tech Electrical Engineering Reference Notes on Pulse Width
+      Modulation and Motor Control.</li>
+  </ol>
+
+  <h2 style="margin-top:34px;">Declaration</h2>
+  <p>We hereby declare that the project work entitled <b>“Robotic Palm — Wi-Fi Controlled
+    Five-Finger Tendon-Driven Robotic Hand”</b> submitted to the Department of Electrical
+    Engineering, Bundelkhand Institute of Engineering and Technology, Jhansi, is a record of
+    original work carried out by us under the guidance of <b>Er. Shailendra Gautam</b>. The
+    measurements, calibration figures and test results presented in this report were obtained
+    on the prototype built by us and have not been reproduced from any other source.</p>
+
+  <table style="margin-top:22px;">
+    <thead><tr><th style="width:46%;">Name</th><th class="c" style="width:22%;">Roll No.</th><th class="c">Signature</th></tr></thead>
+    <tbody>
+      <tr><td>Rudra Pratap Singh</td><td class="c">58</td><td></td></tr>
+      <tr><td>Harshit Yadav</td><td class="c">32</td><td></td></tr>
+      <tr><td>Ankit Kumar Yadav</td><td class="c">15</td><td></td></tr>
+      <tr><td>Suchir Ram Mishra</td><td class="c">68</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="sig" style="margin-top:40px;">
+    <div><span>Date</span></div>
+    <div><span>Er. Shailendra Gautam<br><small>Project Supervisor</small></span></div>
+  </div>
+</div>
+
+</body>
+</html>

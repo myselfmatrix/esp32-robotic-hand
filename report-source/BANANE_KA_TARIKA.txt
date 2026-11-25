@@ -1,0 +1,21 @@
+Robotic Palm -- project report ka source
+========================================
+
+report.html          <- poori report, isi ko edit karo
+assets/biet_logo.png <- college ka logo
+assets/hand_photo.png<- prototype ki photo (Figure 1)
+
+Badlav karne ke baad PDF dobara banane ke liye (Git Bash mein):
+
+  cd c:/Users/Hp/robotic-hand/report-source
+  "/c/Program Files/Google/Chrome/Application/chrome.exe" \
+      --headless --disable-gpu --no-pdf-header-footer \
+      --print-to-pdf="C:/Users/Hp/robotic-hand/Robotic_Palm_Report.pdf" \
+      --virtual-time-budget=20000 \
+      "file:///C:/Users/Hp/robotic-hand/report-source/report.html"
+
+DHYAN: file:/// ke baad Windows wala path (C:/...) dena hai,
+/c/Users/... wala nahi -- warna Chrome chup-chaap fail ho jata hai
+aur purani PDF wahin padi rehti hai.
+
+Is tarah banayi PDF par page number wala footer nahi hoga.

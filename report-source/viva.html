@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Robotic Palm — Viva &amp; Presentation Sheet</title>
+<style>
+  @page { size: A4; margin: 12mm 11mm; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+  html { font-size: 9pt; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1d2327; line-height: 1.38; margin: 0; }
+
+  h1 { font-size: 16pt; color: #15614a; margin: 0 0 2px; }
+  .sub { font-size: 9pt; color: #5a6a64; margin-bottom: 10px; }
+  h2 { font-size: 11.5pt; color: #fff; background: #15614a; margin: 13px 0 7px;
+       padding: 4px 9px; border-radius: 3px; page-break-after: avoid; }
+  p { margin: 0 0 5px; }
+  .q { font-weight: 700; color: #1b4c3b; margin: 7px 0 2px; page-break-after: avoid; }
+  .a { margin: 0 0 6px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 9px; font-size: 8.3pt; }
+  th { background: #15614a; color: #fff; text-align: left; padding: 4px 6px; border: 1px solid #15614a; }
+  td { padding: 3px 6px; border: 1px solid #c8d6d0; }
+  tbody tr:nth-child(even) td { background: #f3f8f6; }
+  td.c, th.c { text-align: center; }
+  .mono { font-family: Consolas, monospace; font-size: 8.2pt; }
+
+  .box { background: #f3f8f6; border-left: 4px solid #15614a; padding: 7px 10px; margin: 8px 0;
+         page-break-inside: avoid; }
+  .hot { background: #fdf5ec; border-left: 4px solid #c17d1e; padding: 7px 10px; margin: 8px 0;
+         page-break-inside: avoid; }
+  .tip { background: #eef3fb; border-left: 4px solid #2a5ca8; padding: 6px 10px; margin: 7px 0;
+         font-size: 8.5pt; page-break-inside: avoid; }
+  .tip b.lbl { color: #2a5ca8; }
+  .cols { display: flex; gap: 11px; }
+  .cols > div { flex: 1; }
+  ol, ul { margin: 0 0 6px; padding-left: 17px; }
+  li { margin-bottom: 3px; }
+  .step { border: 1.4px solid #15614a; border-radius: 4px; padding: 7px 10px; margin: 7px 0;
+          page-break-inside: avoid; }
+  .step b.n { display: inline-block; background: #15614a; color: #fff; border-radius: 50%;
+              width: 17px; height: 17px; text-align: center; line-height: 17px;
+              font-size: 8.5pt; margin-right: 6px; }
+  .say { color: #14432f; background: #f3f8f6; display: block; padding: 5px 8px;
+         border-radius: 3px; margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<h1>Robotic Palm — Viva &amp; Presentation Sheet</h1>
+<div class="sub">BIET Jhansi &nbsp;·&nbsp; Rudra Pratap Singh (58), Harshit Yadav (32), Ankit Kumar Yadav (15), Suchir Ram Mishra (68)
+ &nbsp;·&nbsp; <b>Green = bolna hai (English) &nbsp; Blue = sirf tumhare liye tip</b></div>
+
+<!-- ============ NUMBERS ============ -->
+<h2>1 &nbsp; Numbers to memorise</h2>
+<div class="cols">
+  <div>
+    <table>
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Servo pulse range</td><td class="mono">500–2400 µs = 0–180°</td></tr>
+      <tr><td>PWM frequency</td><td class="mono">50 Hz (20 ms period)</td></tr>
+      <tr><td>What we measured</td><td class="mono">49.9 Hz</td></tr>
+      <tr><td>PCA9685 address</td><td class="mono">0x40</td></tr>
+      <tr><td>I²C pins / speed</td><td class="mono">SDA 22, SCL 23 / 100 kHz</td></tr>
+      <tr><td>PWM resolution</td><td class="mono">12 bit = 4096, 1 count ≈ 4.89 µs</td></tr>
+    </table>
+  </div>
+  <div>
+    <table>
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Actuators</td><td class="mono">5 × SG90, ~1.8 kg·cm</td></tr>
+      <tr><td>Running current</td><td class="mono">~100–150 mA each</td></tr>
+      <tr><td>Stall current</td><td class="mono">~700 mA each</td></tr>
+      <tr><td>Power supply</td><td class="mono">5 V 5 A SMPS</td></tr>
+      <tr><td>Motion update</td><td class="mono">every 20 ms</td></tr>
+      <tr><td>Auto-relax delay</td><td class="mono">8 seconds</td></tr>
+    </table>
+  </div>
+</div>
+
+<table>
+  <tr><th>Channel</th><th class="c">CH0</th><th class="c">CH1</th><th class="c">CH2</th><th class="c">CH3</th><th class="c">CH4</th></tr>
+  <tr><td><b>Finger</b></td><td class="c">THUMB</td><td class="c">INDEX</td><td class="c">MIDDLE</td><td class="c">RING</td><td class="c">PINKY</td></tr>
+  <tr><td><b>OPEN</b></td><td class="c">15°</td><td class="c">15°</td><td class="c">15°</td><td class="c">15°</td><td class="c">15°</td></tr>
+  <tr><td><b>CLOSED</b></td><td class="c">110°</td><td class="c">140°</td><td class="c">175°</td><td class="c">175°</td><td class="c">170°</td></tr>
+</table>
+
+<div class="box">
+  <b>Three sentences that answer half the questions:</b>
+  <ol style="margin-bottom:0;">
+    <li>“A servo is not commanded in degrees — it is commanded by <b>pulse width</b>: 500 µs is 0°, 2400 µs is 180°, repeated every 20 ms.”</li>
+    <li>“A hobby servo <b>cannot report back</b> whether it reached the target, so all safety has to be preventive.”</li>
+    <li>“Our hand signs are stored as <b>percentages, not angles</b>, so recalibrating one finger automatically corrects every gesture.”</li>
+  </ol>
+</div>
+
+<!-- ============ Q&A ============ -->
+<h2>2 &nbsp; Viva questions with answers</h2>
+
+<div class="q">Q1. What does your project do?</div>
+<p class="a">It is a five-finger robotic hand that reproduces human finger motion. Each finger is pulled closed by a nylon tendon wound on the horn of an SG90 servo. The five servos are driven by a PCA9685 PWM controller over the I²C bus, and an ESP32 hosts the control web page itself — so it can be operated from any phone or laptop browser with no application installed. It performs <b>twelve static hand signs and five animated gestures</b>.</p>
+
+<div class="q">Q2. What is PWM, and how does a servo hold a position?</div>
+<p class="a">PWM means Pulse Width Modulation — information is carried in the <b>width</b> of the pulse rather than its voltage. The servo receives one pulse every <b>20 ms</b>, and the width of that pulse is the commanded position: <span class="mono">500 µs = 0°</span>, <span class="mono">1500 µs = 90°</span>, <span class="mono">2400 µs = 180°</span>. Inside the servo, a potentiometer reports the actual shaft position, and the control circuit drives the motor until the feedback voltage matches the commanded value.</p>
+
+<div class="q">Q3. What is the duty cycle at 90°?</div>
+<p class="a">1500 µs ÷ 20000 µs = <b>7.5 %</b>. At 0° it is 2.5 %, and at 180° it is 12 %.</p>
+<div class="tip"><b class="lbl">Tip:</b> ye calculation examiner aksar poochta hai — teenon number ratt lo.</div>
+
+<div class="q">Q4. Why use a PCA9685? Why not generate PWM directly from the ESP32?</div>
+<p class="a">Three reasons. First, the PCA9685 contains sixteen independent <b>hardware</b> PWM generators — we write the value once over I²C and the chip regenerates the pulses continuously, so the processor carries no timing load. That is why our servo timing stayed correct even while the board was serving web pages: we measured <b>49.9 Hz</b> against a 50 Hz target. Second, it keeps the servo current path completely off the controller board. Third, it provides sixteen channels; we used five, leaving eleven free for expansion.</p>
+
+<div class="q">Q5. What is I²C, and how many wires does it need?</div>
+<p class="a">I²C is a two-wire serial bus — <b>SDA</b> for data and <b>SCL</b> for clock, plus power and ground. Each device on the bus has its own address; our PCA9685 is at <span class="mono">0x40</span>. Several devices can share the same two lines, which is why only two GPIO pins are needed.</p>
+
+<div class="q">Q6. Why is a common ground necessary?</div>
+<p class="a">Because an I²C signal is a <b>voltage</b>, and a voltage is always measured relative to a reference. If the two boards have different 0 V references, the ESP32’s 3.3 V has no defined meaning at the driver. Without the common ground the PCA9685 does not even appear in the I²C scan.</p>
+
+<div class="q">Q7. Why a separate power supply for the servos?</div>
+<p class="a">Five servos moving together draw about 0.5 to 0.75 A, and if all five stall the demand approaches 3.5 A. The ESP32’s on-board regulator cannot supply that — the rail sags, the board browns out and resets, and the regulator can be damaged. So the servos run from a separate 5 V 5 A SMPS, and the two supplies share <b>only the ground reference</b>.</p>
+
+<div class="q">Q8. What does tendon-driven mean, and why did you choose it?</div>
+<p class="a">The actuator is not inside the finger. It is mounted on the forearm, and a flexible line — the tendon — runs from the fingertip to the servo horn. As the horn rotates it winds the line and the finger flexes. This is exactly how the human hand works: there are no muscles in our fingers, they are all in the forearm. The advantage is that mass is kept out of the moving structure, so small servos are sufficient.</p>
+
+<div class="q">Q9. How does the finger return to the open position?</div>
+<p class="a">Through the elastic recovery of the moulded palm material. When the servo unwinds, the tendon slackens and the finger straightens by itself. There were three options — an antagonistic second tendon, a return spring, or material elasticity — and we chose the third because it <b>halves the number of actuators</b>. The trade-off is that the opening stroke is slower and weaker than the closing stroke.</p>
+
+<div class="hot">
+  <b>Q10. What is calibration, and why are the values different for each finger?</b>
+  <p style="margin:4px 0 0;">Calibration records, for each finger, the pulse width at which it is fully open and the pulse width at which it is fully closed. Our measured values are THUMB <b>110°</b>, INDEX 140°, MIDDLE <b>175°</b>, RING 175° and PINKY 170° — a spread of <b>65°</b>. This is not a defect: the fingers differ in length, the tendon paths differ, and each line was tied at a slightly different tension. The values are stored in the ESP32’s non-volatile flash, so they survive a power cycle.</p>
+</div>
+
+<div class="q">Q11. Why are the hand signs stored as percentages instead of angles?</div>
+<p class="a">This is the key design decision. “Fist” is stored as <span class="mono">{100, 100, 100, 100, 100}</span>, where 0 means fully open and 100 means fully closed. The firmware converts each percentage using that finger’s own calibrated endpoints: <span class="mono">pulse = open + (closed − open) × percent ÷ 100</span>. If we had stored angles, “all fingers to 175°” would have snapped the thumb tendon, and “all to 110°” would have left the middle finger half closed. Because it is percentage-based, recalibrating one finger automatically corrects <b>all seventeen motions</b> with no code change.</p>
+
+<div class="q">Q12. How do all the fingers close at the same time?</div>
+<p class="a">Every 20 ms each finger advances by a small step, but the step is <b>scaled in proportion to the distance it still has to travel</b>: <span class="mono">step = speed × (own distance ÷ largest distance)</span>. A finger that must travel twice as far moves twice as fast, so all five arrive together. We verified this: despite travels differing by 65°, all four closing fingers finished at <span class="mono">t + 3.7 s</span>.</p>
+
+<div class="q">Q13. What is stall current, and how did you protect against it?</div>
+<p class="a">If a servo is commanded to move but cannot — because the tendon is already taut — the motor remains blocked while still drawing full current, around 700 mA. This causes heating, audible buzzing and eventual stripping of the plastic gears. We used three layers of protection: <b>per-finger travel limits</b>, <b>clamping</b> of every computed value before it is sent, and an <b>automatic relax</b> that removes the PWM signal eight seconds after motion stops.</p>
+
+<div class="q">Q14. What happens if an out-of-range angle is commanded?</div>
+<p class="a">It is clamped. Every value passes through a function that limits it to the intersection of the absolute servo range, 500 to 2400 µs, and that finger’s own recorded limits. The command is reduced to the safe boundary rather than being executed.</p>
+
+<div class="q">Q15. Is the system open-loop or closed-loop?</div>
+<p class="a">The servo is closed-loop <b>internally</b>, through its potentiometer feedback. But at <b>system level it is open-loop</b>: the servo cannot report back to the controller, and we have no sensor on the finger itself. So if a tendon slips we cannot detect it, which is precisely why all our safety measures are preventive rather than reactive.</p>
+
+<div class="q">Q16. How many degrees of freedom does the hand have?</div>
+<p class="a">Five — one per finger. A human hand has more than twenty. Each of our fingers curls as a single unit because one tendon pulls the whole finger; the individual joints are not independently controlled.</p>
+
+<div class="q">Q17. Can it work without a laptop or a Wi-Fi router?</div>
+<p class="a">Yes. The ESP32 also runs its own access point. You connect to the network <span class="mono">RoboticHand</span> and open <span class="mono">http://192.168.4.1</span>. No router is required and that address never changes.</p>
+
+<div class="q">Q18. What are the limitations of your project?</div>
+<p class="a">Honestly, four. There is no position feedback, so a slipped tendon cannot be detected. There is no grip force control. The middle and ring fingers close only <b>5° short</b> of the servo’s mechanical stop, so if a tendon stretches slightly they will not close fully and no software change can recover it — the remedy is a longer horn, 15 mm to 30 mm. And the SG90’s torque of about 1.8 kg·cm limits the hand to light objects.</p>
+<div class="tip"><b class="lbl">Tip:</b> limitation chhupana mat. Jo apni kami khud jaanta hai, examiner usko serious engineer maanta hai.</div>
+
+<div class="hot">
+  <b>Q19. Did you face any problem during testing? (best question to get)</b>
+  <p style="margin:4px 0 0;">Yes. After we changed the wiring order and uploaded new firmware, the pointing sign still extended the wrong finger. We read the PCA9685 registers back over I²C and found them completely correct, which proved that neither the firmware nor the driver was at fault. The real cause was that the <b>channel number is also stored in non-volatile memory</b>, so the old mapping was being reloaded at startup and overriding the newly compiled table. Reloading the defaults and saving them fixed it. The lesson is that persistent stored configuration can silently override newly compiled code.</p>
+</div>
+
+<div class="q">Q20. Could this be used as a real prosthetic hand?</div>
+<p class="a">Not in its present form — this is a working model of the principle, not a prosthesis. Three additions would be needed: EMG sensors to read muscle signals from the forearm, current sensing or force sensors for grip control, and higher-torque metal-gear servos. But the underlying principle — tendon actuation with position-controlled actuators — is exactly the principle used in real prosthetic hands.</p>
+
+<!-- ============ SCRIPT ============ -->
+<h2>3 &nbsp; Presentation script — 3 minutes, with the demo</h2>
+
+<div class="tip">
+  <b class="lbl">Strategy:</b> number se shuru karo → demo chalao → ek mushkil problem batao jo tumne solve ki.
+  “Humne banaya hai” se marks nahi milte; <b>naapa hua number</b> bolne se milte hain.
+</div>
+
+<div class="step">
+  <b class="n">1</b><b>Opening — 20 seconds</b>
+  <span class="say">“Sir, this is our Robotic Palm — a five-finger tendon-driven robotic hand. Each finger is
+  pulled by a nylon tendon wound on an SG90 servo, and all five servos are driven by a PCA9685 PWM
+  controller over the I²C bus. What makes it different is that the ESP32 <b>hosts the control page
+  itself</b> — there is no application and no computer involved. I am operating it right now from my
+  phone.”</span>
+  <div class="tip" style="margin-bottom:0;"><b class="lbl">Karna:</b> bolte hue phone uthao aur page kholo. Pehle 10 second mein unko dikhna chahiye ki control tumhare haath mein hai.</div>
+</div>
+
+<div class="step">
+  <b class="n">2</b><b>The demo — in this exact order, 60 seconds</b>
+  <table style="margin:5px 0 3px;">
+    <tr><th style="width:24%;">Run this</th><th>Say this while it moves</th></tr>
+    <tr><td><b>OPEN → FIST</b></td>
+        <td>“Notice that all five fingers <b>stop at the same instant</b>, even though their travels differ by 65 degrees.”</td></tr>
+    <tr><td><b>PEACE</b></td>
+        <td>“The signs are stored as percentages, not angles, so each finger automatically takes its own correct travel.”</td></tr>
+    <tr><td><b>WAVE</b></td>
+        <td>“This is a travelling wave — it moves from the little finger across to the thumb.”</td></tr>
+    <tr><td><b>Wait 8 sec</b></td>
+        <td>“The PWM has now switched off automatically. That is our auto-relax, and it is what keeps the servos from overheating.”</td></tr>
+  </table>
+</div>
+
+<div class="step">
+  <b class="n">3</b><b>The real engineering — 40 seconds</b>
+  <span class="say">“Sir, the hardest problem was that a hobby servo <b>cannot tell you</b> whether it actually
+  reached its position. If the tendon blocks it, the motor keeps drawing stall current and destroys itself.
+  So we built three layers of protection: a travel limit for each individual finger, clamping of every value
+  before it is sent to the driver, and an eight-second automatic PWM cut-off.”</span>
+  <span class="say">“The second decision was to store every hand sign as a <b>percentage</b> rather than an
+  angle. Our thumb closes at 110 degrees but the middle finger needs 175. If we had written angles, a single
+  ‘fist’ command could not have worked correctly on all five fingers.”</span>
+</div>
+
+<div class="step">
+  <b class="n">4</b><b>Verification — 30 seconds. This is your strongest card.</b>
+  <span class="say">“We did not stop at ‘it appears to work’. We read the PWM registers back over I²C and
+  measured <b>49.9 hertz</b> against a 50 hertz target, with every pulse width within <b>one count</b> —
+  that is 4.89 microseconds — of the commanded value. We then cycled a finger six times and took twelve
+  readings, and <b>all twelve were identical</b>. That proved the control signal is perfectly repeatable, so
+  any variation we see in a finger must come from the mechanism and not from the software.”</span>
+</div>
+
+<div class="step">
+  <b class="n">5</b><b>Closing — 20 seconds</b>
+  <span class="say">“Its present limitations are that there is no position feedback and no grip force control.
+  The next steps would be current sensing for force feedback, and EMG sensors so the hand can be driven by
+  muscle signals — which would take it towards a working prosthetic. Thank you, sir.”</span>
+</div>
+
+<div class="hot">
+  <b>If the demo misbehaves — say this, calmly:</b>
+  <p style="margin:4px 0 0;">“Sir, that is a mechanical issue with the tendon, not with the electronics.
+  Let me show you the register readback to confirm the signal is correct.”
+  → then run <span class="mono">reg</span> on the serial console.</p>
+  <div class="tip" style="margin:5px 0 0;"><b class="lbl">Yaad rakho:</b> galti maan ke uski wajah bata dena hamesha chhupane se zyada number deta hai.</div>
+</div>
+
+<div class="tip">
+  <b class="lbl">Chaar cheezein jo nahi karni:</b>
+  <ul style="margin-bottom:0;">
+    <li>“Code internet se liya” mat bolna — calibration aur gestures tumne khud naape hain, wahi bolo.</li>
+    <li>Jo nahi pata uska jhoota jawab mat dena — “Sir, we did not test that” kehna bilkul theek hai.</li>
+    <li>Demo se pehle check: <b>SMPS on</b>, <b>USB laga hua</b>, <b>phone wahi WiFi par</b>.</li>
+    <li>FIST ko der tak mat pakda rehna — 8 sec mein relax hoga, aur usko <b>feature</b> bata dena.</li>
+  </ul>
+</div>
+
+</body>
+</html>
